@@ -1,3 +1,4 @@
+[GITHUB-README (copy).txt](https://github.com/user-attachments/files/26747778/GITHUB-README.copy.txt)
 ================================================================================
                               H A M M E R F O R G E
                           Your Home Node Mining Solution
