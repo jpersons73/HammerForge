@@ -1,626 +1,383 @@
-[README.md](https://github.com/user-attachments/files/26747828/README.md)
+[README.md](https://github.com/user-attachments/files/26747919/README.md)
 <p align="center">
-  <img src="https://img.shields.io/badge/SHA--256-Solo%20Mining-orange?style=for-the-badge" alt="SHA-256 Solo Mining" />
-  <img src="https://img.shields.io/badge/Coins-12-blue?style=for-the-badge" alt="12 Coins" />
-  <img src="https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows" alt="Windows" />
-  <img src="https://img.shields.io/badge/NiceHash-Compatible-green?style=for-the-badge" alt="NiceHash Compatible" />
+  <img src="https://img.shields.io/badge/SHA--256-Solo%20Mining-orange?style=for-the-badge" alt="SHA-256 Solo Mining"/>
+  <img src="https://img.shields.io/badge/Coins-12-blue?style=for-the-badge" alt="12 Coins"/>
+  <img src="https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows" alt="Windows"/>
+  <img src="https://img.shields.io/badge/Fees-0%25-brightgreen?style=for-the-badge" alt="Zero Fees"/>
 </p>
 
-# HammerForge
+<h1 align="center">HammerForge</h1>
+<h3 align="center">Your Home Node Mining Solution</h3>
 
-### Your Home Node Solution
+<p align="center">
+  Fully automated SHA-256 solo mining for <b>12 cryptocurrencies</b> running concurrently on your Windows PC.<br/>
+  No pool fees. No third parties. <b>100% of every block reward goes directly to YOUR wallet.</b>
+</p>
 
-**Mine 12 SHA-256 coins simultaneously. No pool fees. 100% of block rewards go directly to your wallet.**
+<p align="center">
+  <a href="#quick-start">Quick Start</a> &bull;
+  <a href="#supported-coins">Supported Coins</a> &bull;
+  <a href="#features">Features</a> &bull;
+  <a href="#miner-setup">Miner Setup</a> &bull;
+  <a href="#troubleshooting">Troubleshooting</a> &bull;
+  <a href="#faq">FAQ</a>
+</p>
 
-HammerForge is a fully automated Windows installer that sets up a private stratum mining server on your PC. It connects directly to your local full nodes, builds real block templates, and broadcasts your blocks to the network when you find one. **You are the pool.**
+---
+
+## Overview
+
+HammerForge turns any Windows PC into a **private mining pool** capable of running up to 12 cryptocurrency nodes simultaneously, each with its own Stratum server and web dashboard.
+
+Unlike pool mining, you run the full node, you own the keys, and you keep every satoshi of the block reward.
+
+**Designed for:**
+- Home ASIC miners (Bitaxe, MagicMiner, Avalon Nano, etc.)
+- NiceHash hashrate rentals
+- Small/medium SHA-256 mining operations
+- Cryptocurrency enthusiasts supporting decentralization
 
 ---
 
 ## Supported Coins
 
-| Coin | Ticker | Stratum | RPC | P2P | Node Software |
-|:-----|:------:|:-------:|:---:|:---:|:--------------|
-| BitcoinII | BC2 | 3333 | 8232 | 8338 | BitcoinII Core v29.1.0 |
-| DigiByte | DGB | 3334 | 14022 | 12024 | DigiByte Core |
-| Bitcoin | BTC | 3335 | 8332 | 8333 | Bitcoin Core v28.1 |
-| Bitcoin Cash | BCH | 3336 | 8432 | 8433 | Bitcoin Cash Node |
-| Bitcoin SV | BSV | 3337 | 8532 | 8533 | Bitcoin SV Node |
-| eCash | XEC | 3338 | 8632 | 8633 | Bitcoin ABC |
-| Fractal Bitcoin | FB | 3339 | 8732 | 8733 | Fractal Bitcoin |
-| Peercoin | PPC | 3340 | 9902 | 9901 | Peercoin |
-| Litecoin Cash | LCC | 3341 | 62457 | 62458 | Litecoin Cash |
-| NitoCoin | NITO | 3342 | 8821 | 8820 | NitoCoin |
-| Bitcoin Cash II | BCH2 | 3343 | 8342 | 8339 | Bitcoin Cash II |
-| XeroCoin | XRO | 3344 | 25169 | 25170 | XeroCoin |
+| Ticker | Coin | Stratum Port | RPC Port |
+|:------:|:-----|:------------:|:--------:|
+| **BC2** | BitcoinII | 3333 | 8232 |
+| **DGB** | DigiByte (SHA-256) | 3334 | 14022 |
+| **BTC** | Bitcoin | 3335 | 8332 |
+| **BCH** | Bitcoin Cash | 3336 | 8432 |
+| **BSV** | Bitcoin SV | 3337 | 8532 |
+| **XEC** | eCash | 3338 | 8632 |
+| **FB** | Fractal Bitcoin | 3339 | 8732 |
+| **PPC** | Peercoin | 3340 | 9902 |
+| **LCC** | Litecoin Cash | 3341 | 62457 |
+| **NITO** | NitoCoin | 3342 | 8821 |
+| **BCH2** | Bitcoin Cash II | 3343 | 8342 |
+| **XRO** | XeroCoin | 3344 | 25169 |
 
-All 12 coins run concurrently on separate ports. Each coin has its own process, its own desktop shortcut, and talks to its own full node.
-
----
-
-## How It Works
-
-```
-Your ASIC Miner(s)            NiceHash Rental
-       |                            |
-       |  stratum+tcp               |  stratum+tcp
-       v                            v
-  +-------------------------------------------+
-  |      HammerForge Stratum Server           |
-  |   (Node.js - one instance per coin)       |
-  |                                           |
-  |   - Builds block templates from your node |
-  |   - Assigns work to miners                |
-  |   - Validates shares (SHA-256d)           |
-  |   - Submits blocks when found             |
-  |   - Variable difficulty (vardiff)         |
-  |   - UPnP auto port forwarding            |
-  +-------------------------------------------+
-              |
-              |  JSON-RPC (localhost)
-              v
-  +-------------------------------------------+
-  |      Your Full Node Wallet                |
-  |   (Bitcoin Core, DigiByte Core, etc.)     |
-  |                                           |
-  |   - Fully synced blockchain               |
-  |   - getblocktemplate for real templates    |
-  |   - submitblock when you find a block     |
-  |   - Block reward goes to YOUR wallet      |
-  +-------------------------------------------+
-```
-
-### Mining Flow
-
-1. **Block Template** - Server calls `getblocktemplate` on your local node for real block data
-2. **Job Construction** - Builds a stratum job with the coinbase paying YOUR wallet address
-3. **Work Distribution** - Each miner gets a unique `extranonce1` so no duplicate work
-4. **Share Submission** - Miner finds a hash below share target, server validates via SHA-256d
-5. **Block Found** - If the hash meets network difficulty, the full block is submitted via `submitblock`
-
-### Difficulty System
-
-| Setting | Value | Purpose |
-|:--------|:------|:--------|
-| Default Difficulty | 65,536 | Starting difficulty for home ASIC miners |
-| NiceHash Min Difficulty | 500,000 | Minimum for NiceHash rentals (auto-detected) |
-| Max Difficulty | 4,000,000,000 | Upper ceiling |
-| Target Share Time | 5 seconds | How often a miner should submit a share |
-| Retarget Interval | 15 seconds | How often difficulty is recalculated |
-| Variance | 40% | Acceptable deviation from target share time |
-
-- **Password-based difficulty** - Miners can set `diff=500000` in the password field
-- **NiceHash auto-detection** - User agents containing "NiceHash" or "nhmp" get minimum 500k difficulty
-- **Diff1 Target (pdiff)** - Uses `0x00000000FFFF...` for accurate NiceHash compatibility
+Each coin runs as a **completely independent process** with its own node, wallet, stratum server, and web dashboard. Run any combination simultaneously.
 
 ---
 
-## Installation Guide
+## System Requirements
 
-### Prerequisites
+| | Minimum | Recommended |
+|:--|:--------|:------------|
+| **OS** | Windows 10 (64-bit) | Windows 11 (64-bit) |
+| **RAM** | 8 GB | 32 GB (for all 12 coins) |
+| **Disk** | 50 GB free (pruned) | SSD with 100+ GB |
+| **Network** | Broadband internet | Stable, always-on connection |
+| **Runtime** | Node.js v20+ | Auto-installed by installer |
 
-- **OS:** Windows 10/11 (64-bit)
-- **Hardware:** SHA-256 miner on your LAN (Bitaxe, MagicMiner, Luckyminer, Avalon Nano, or any SHA-256 ASIC)
-- **RAM:** 8 GB minimum recommended for multiple coin nodes
-- **Disk:** Depends on coins and pruning (see [Pruning Guide](#blockchain-pruning-guide))
-
-### Step 1: Download and Extract
-
-1. Download the HammerForge ZIP package
-2. Right-click the ZIP > **Extract All...**
-3. Extract to any folder (e.g. Desktop or `C:\HammerForge`)
-4. Open the folder and launch `START-HERE.html` for an interactive setup guide
-
-### Step 2: Install Tailscale (Optional)
-
-Install Tailscale **before** the mining installer if you want remote access from your phone or other devices. The installer auto-detects Tailscale and configures everything. See [Remote Access with Tailscale](#remote-access-with-tailscale) for details.
-
-### Step 3: Install Wallet(s)
-
-Right-click each installer and select **Run as administrator**:
-
-| Installer | Coin |
-|:----------|:-----|
-| `INSTALL-BC2-CORE.bat` | BitcoinII |
-| `INSTALL-DGB-CORE.bat` | DigiByte |
-| `INSTALL-BTC-CORE.bat` | Bitcoin |
-| `INSTALL-BCH-CORE.bat` | Bitcoin Cash |
-| `INSTALL-BSV-CORE.bat` | Bitcoin SV |
-| `INSTALL-XEC-CORE.bat` | eCash |
-| `INSTALL-FB-CORE.bat` | Fractal Bitcoin |
-| `INSTALL-PPC-CORE.bat` | Peercoin |
-| `INSTALL-LCC-CORE.bat` | Litecoin Cash |
-| `INSTALL-NITO-CORE.bat` | NitoCoin |
-| `INSTALL-BCH2-CORE.bat` | Bitcoin Cash II |
-| `INSTALL-XRO-CORE.bat` | XeroCoin |
-
-Each installer automatically downloads the wallet, creates the data directory, offers blockchain pruning, configures RPC credentials, adds firewall rules, and creates a desktop shortcut. You can choose a custom install location or use the default (`C:\Program Files\<CoinName>`).
-
-**After installing, open each wallet and let the blockchain sync completely before mining.**
-
-### Step 4: Blockchain Pruning
-
-During installation you will be asked to enable pruning. Type **`y`** to save disk space or **`n`** for the full chain. See [Blockchain Pruning Guide](#blockchain-pruning-guide) for details.
-
-### Step 5: Set Up Mining
-
-Right-click `INSTALL-MINING.bat` > **Run as administrator**. The installer walks you through 7 steps:
-
-| Step | What Happens |
-|:-----|:-------------|
-| 1a/7 | Checks for / installs **Node.js v20** |
-| 1b/7 | Checks for Tailscale (auto-detects if installed) |
-| 2/7 | Detects which coin wallets are installed |
-| 3/7 | Prompts for your wallet address per coin (Enter to skip) |
-| 4/7 | Email notification setup (optional) |
-| 5/7 | Configures wallet `.conf` files with RPC settings (backup copy saved to coin folder) |
-| 6/7 | Installs stratum server dependencies (`npm install`) |
-| 7/7 | Creates configs, batch scripts, firewall rules, and desktop shortcuts |
-
-### Step 6: Start Mining
-
-1. Make sure your wallet is open and fully synced
-2. Double-click the desktop shortcut (e.g. "BC2 HammerForge")
-3. The CMD window shows the server log and the monitor opens in your browser
-
-**You can run all 12 coins simultaneously.** Each runs as its own process on its own port.
-
-> **Port conflict recovery:** If an old instance is still running, the server auto-detects the conflict, kills the old process, and takes over the port. Miners briefly disconnect then reconnect automatically.
+> **Disk Space with Pruning:** BTC uses ~10 GB (pruned from 600+ GB). Other coins typically use 1-5 GB each. HammerForge enables pruning by default.
 
 ---
 
-## Configure Your Miners
+## Quick Start
 
-Point your SHA-256 ASIC miners to:
+### Step 1: Download & Extract
+Download the latest release and extract the ZIP to any folder (e.g., `C:\HammerForge`).
+
+### Step 2: Install Coin Nodes
+Run the installer for each coin you want to mine:
+```
+Double-click:  INSTALL-BTC-CORE.bat
+Double-click:  INSTALL-BCH2-CORE.bat
+```
+
+Each installer automatically:
+- Downloads the official coin node software
+- Configures RPC, pruning, and firewall rules
+- Creates a wallet and generates a receiving address
+- Launches the node to begin blockchain sync
+
+### Step 3: Wait for Sync
+Let each coin node fully synchronize. Check progress in each wallet's status bar.
+
+| Coin | Typical Sync Time |
+|:-----|:------------------|
+| BTC | 4-12 hours (with snapshot) |
+| BCH, BSV | 2-6 hours |
+| Small coins (BC2, NITO, etc.) | Minutes to 1 hour |
+
+### Step 4: Install Mining Software
+```
+Double-click:  Mining\INSTALL-MINING.bat
+```
+This will:
+- Install Node.js v20 (if needed)
+- Prompt for wallet addresses for each installed coin
+- Optionally configure email notifications
+- Create desktop shortcuts for each coin
+
+### Step 5: Start Mining
+Double-click any desktop shortcut (e.g., **"BTC HammerForge"**), then point your miner to:
+```
+stratum+tcp://YOUR_PC_IP:PORT
+```
+
+---
+
+## Architecture
 
 ```
-URL:      stratum+tcp://YOUR_PC_IP:PORT
-Worker:   YOUR_WALLET_ADDRESS.MinerName
-Password: x
++-------------------+     +--------------------+     +------------------+
+|   ASIC Miner      |     |    HammerForge     |     |    Coin Node     |
+|  (Bitaxe, etc.)   | <=> |  Stratum Server    | <=> |   (Full Node)    |
+|                   |     |  + Web Dashboard   |     |   + Wallet       |
++-------------------+     +--------------------+     +------------------+
+      Stratum V1              Node.js / TS              JSON-RPC
 ```
 
-Refer to the [Supported Coins](#supported-coins) table for each coin's stratum port.
+**Layer 1 - Coin Full Nodes:** Official coin software validating transactions and providing block templates via `getblocktemplate`.
 
-**Examples:**
+**Layer 2 - HammerForge Stratum Server:** Implements Stratum V1, distributes jobs to miners, validates shares, submits found blocks, and hosts the monitoring dashboard.
+
+**Layer 3 - Mining Hardware:** Any SHA-256 ASIC miner or NiceHash rental connecting via standard Stratum V1.
+
+### Key Server Components
+
+| File | Purpose |
+|:-----|:--------|
+| `server/stratum.ts` | Stratum V1 protocol, share validation, block submission |
+| `server/rpc.ts` | JSON-RPC communication with coin nodes |
+| `server/routes.ts` | REST API and web dashboard |
+| `server/storage.ts` | In-memory state and persistent block log |
+| `server/email.ts` | SMTP notification system |
+
+---
+
+## Features
+
+### Mining Engine
+- Full **Stratum V1** protocol implementation
+- SHA-256 double-hash share validation
+- **Fast-path block submission** (submit first, verify after)
+- **Variable difficulty (Vardiff)** targeting 15-second share intervals
+- **NiceHash auto-detection** with 500,000 minimum difficulty
+- **AsicBoost / version-rolling** support (`mining.configure`)
+- Concurrent mining of all 12 coins on separate ports
+- Near-miss share logging (tracks close calls)
+
+### Block Submission Pipeline
+When a block-level hash is found, HammerForge uses a zero-delay pipeline:
 
 ```
-Mining BC2 with Bitaxe:       stratum+tcp://192.168.1.100:3333
-Mining DGB with MagicMiner:   stratum+tcp://192.168.1.100:3334
-Mining BTC with NiceHash:     stratum+tcp://YOUR_PUBLIC_IP:3335
+DETECT  -->  BUILD (<1ms)  -->  SUBMIT (immediate)  -->  VERIFY (async)  -->  NOTIFY
+```
+
+1. **Detect** - Share hash compared against network target
+2. **Build** - Block hex assembled in memory (sub-millisecond)
+3. **Submit** - `submitblock` RPC call fired immediately
+4. **Verify** - Post-submit chain confirmation runs asynchronously
+5. **Notify** - Desktop popup, email, dashboard update
+
+> Submit latency is timed and logged for every block (build time + RPC time in ms).
+
+### Wallet Address Support
+
+| Format | Prefixes |
+|:-------|:---------|
+| **Bech32** | `bc1q`, `dgb1q`, `nito1q`, `lcc1q`, `xro1q`, `pc1q`, `fb1q`, `firo1q` |
+| **Bech32m** | `bc1p`, `dgb1p`, `nito1p`, `lcc1p`, `xro1p`, `pc1p`, `fb1p`, `firo1p` |
+| **Base58** | `1`, `3`, `D`, `N`, `P`, `C`, `a`, `L`, `F`, `E`, `M`, `Z` |
+| **CashAddr** | `bitcoincash:q`, `bitcoincashii:q`, `ecash:q` |
+| **RPC Fallback** | Automatic resolution via `validateaddress` for unknown formats |
+
+Address decoding is verified at startup with a clear log message.
+
+### Web Dashboard
+- Real-time hashrate monitoring with interactive charts
+- Per-worker statistics (hashrate, shares, difficulty, uptime)
+- Network difficulty and block height tracking
+- External difficulty comparison (detects wrong-fork scenarios)
+- Blocks found log with status tracking
+- Responsive design (desktop, tablet, mobile)
+
+### Notifications
+- **Windows desktop popup** when a block is found
+- **SMTP email alerts** (configurable globally or per-worker)
+- Block status tracking: ACCEPTED / ORPHANED / STALE / REJECTED
+
+### Network & Remote Access
+- **UPnP** automatic port forwarding
+- **Tailscale** integration for secure remote monitoring
+- External miner support (mine from anywhere)
+
+---
+
+## Miner Setup
+
+### Bitaxe
+1. Open your Bitaxe web interface
+2. Go to **Settings**
+3. Configure:
+   - **Pool URL:** `YOUR_PC_IP`
+   - **Pool Port:** `3335` (for BTC, see port table for other coins)
+   - **Pool User:** `YOUR_WALLET_ADDRESS.worker1`
+   - **Pool Pass:** `x`
+4. Save and restart
+
+### NiceHash
+1. Log into NiceHash and create a new SHA-256 order
+2. Set stratum URL: `stratum+tcp://YOUR_PC_IP:3335`
+3. HammerForge auto-detects NiceHash and sets appropriate difficulty
+
+### Generic ASIC
+```
+URL:   stratum+tcp://YOUR_PC_IP:PORT
+User:  WALLET_ADDRESS.WORKER_NAME
+Pass:  x
 ```
 
 ### Password Field Options
 
-| Password | Effect |
-|:---------|:-------|
-| `x` | Standard mining |
-| `diff=500000` | Set custom starting difficulty |
-| `notif=you@gmail.com` | Email notifications for this miner |
-| `diff=65536,notif=you@gmail.com` | Both combined |
+| Option | Example | Description |
+|:-------|:--------|:------------|
+| `diff=X` | `diff=50000` | Set custom starting difficulty |
+| `notif=EMAIL` | `notif=me@mail.com` | Override notification email for this worker |
+| Combined | `diff=100000,notif=me@mail.com` | Both options together |
 
 ---
 
-## Supported Miners
+## Configuration
 
-| Miner | Type | Notes |
-|:------|:-----|:------|
-| MagicMiner | USB ASIC | All models |
-| Luckyminer LV06 | USB ASIC | SHA-256 mode |
-| Avalon Nano 3S | USB ASIC | Low-power home miner |
-| Bitaxe | Open-source ASIC | All variants |
-| NiceHash SHA-256 | Hashrate rental | Auto-detected, optimized difficulty |
-| Any SHA-256 stratum miner | ASIC/Software | Standard stratum v1 protocol |
-
----
-
-## NiceHash Integration
-
-HammerForge is fully compatible with NiceHash SHA-256 hash rentals.
-
-1. Start mining any coin (UPnP auto-opens the port on your router)
-2. Note your public IP from the CMD window: `UPnP: External/public IP is X.X.X.X`
-3. Create a NiceHash order: Algorithm **SHA256**, Pool `stratum+tcp://YOUR_PUBLIC_IP:PORT`
-
-**NiceHash features:**
-- Auto-detection via user agent ("NiceHash" / "nhmp") with 500k minimum difficulty
-- Full `mining.configure` support with version-rolling (AsicBoost)
-- `mining.extranonce.subscribe` support
-- Rapid vardiff (15-second retarget) for rental start/stop
-
----
-
-## Web Monitoring Dashboard
-
-The dashboard opens automatically at `http://localhost:5000/monitor` when you start mining:
-
-- **Hashrate chart** - Real-time graph with 30s intervals (up to 24h history)
-- **Best share chart** - Logarithmic bar chart of highest difficulty shares (5-min intervals)
-- **Worker table** - All miners with 1m, 5m, and 1h hashrate averages
-- **Recent shares** - Latest submissions with difficulty and status
-- **Blocks found** - Discovered blocks with height, hash, reward, and acceptance
-- **Network stats** - Block height, difficulty, hashrate, and coin price
-- **Best share & uptime** - Session stats
-- **Donate dropdown** - Support addresses (click to copy)
-
-Auto-refreshes every 5 seconds. Demo mode available at `/monitor?demo=true`.
-
----
-
-## Block Found Notification
-
-When you find a block:
-
-1. **Popup window** on your Windows desktop with full block details
-2. **Email notification** (if configured) with formatted HTML details
-3. **Log entry** appended to `logs/blocks-found.log`
-
-Blocks are submitted immediately via `submitblock`. The reward goes directly to your configured wallet address.
-
----
-
-<details>
-<summary><strong>Email Notifications Setup</strong></summary>
-
-### Setting Up SMTP During Installation
-
-During Step 4/7 of `INSTALL-MINING.bat`, choose to set up email notifications. The installer offers presets:
-
-| Preset | SMTP Server |
-|:-------|:------------|
-| Gmail | smtp.gmail.com |
-| Outlook | smtp.office365.com |
-| Yahoo | smtp.mail.yahoo.com |
-| Custom | Your own SMTP server |
-
-You will enter your email address, app-specific password, and notification recipient.
-
-### Gmail App Password
-
-1. Go to [myaccount.google.com](https://myaccount.google.com) > **Security**
-2. Enable **2-Step Verification**
-3. Go to **App passwords** > Select **Mail** / **Windows Computer**
-4. Click **Generate** and copy the 16-character password
-5. Paste into the installer when prompted
-
-### Outlook App Password
-
-1. Go to [account.microsoft.com/security](https://account.microsoft.com/security)
-2. **Advanced security options** > **Create a new app password**
-
-### Yahoo App Password
-
-1. Go to [login.yahoo.com/account/security](https://login.yahoo.com/account/security)
-2. **Generate app password** > Select **Other App**, name it "HammerForge"
-
-### Per-Miner Email Override
-
-Set the notification recipient per miner via the password field:
-
-```
-Password: notif=you@gmail.com
-Password: diff=65536,notif=you@gmail.com
-```
-
-</details>
-
----
-
-<details>
-<summary><strong>Remote Access with Tailscale</strong></summary>
-
-Tailscale creates a private encrypted network between your devices so you can access the mining monitor from anywhere without opening router ports.
-
-### Setup
-
-1. Download from [tailscale.com/download/windows](https://tailscale.com/download/windows)
-2. Install and sign in (Google, Microsoft, or GitHub - free for personal use)
-3. Verify: run `tailscale ip -4` in a command prompt (should show `100.x.x.x`)
-4. Install on your phone (iOS App Store / Google Play) with the same account
-
-### How It Works with HammerForge
-
-When you run `INSTALL-MINING.bat`, it auto-detects Tailscale and configures remote access. When mining starts, the CMD window shows:
-
-```
-Remote access: http://100.64.0.2:5000/monitor
-```
-
-Open that URL on your phone to see the full live dashboard.
-
-### QR Code
-
-The monitor includes a **QR Code** button in the remote access bar. Scan with your phone for instant access.
-
-### Already Mining Without Tailscale?
-
-Either re-run `INSTALL-MINING.bat` or manually browse to `http://YOUR_TAILSCALE_IP:5000/monitor`.
-
-</details>
-
----
-
-<details>
-<summary><strong>BTC Fast Sync: UTXO Snapshots</strong></summary>
-
-Bitcoin Core v28+ supports **AssumeUTXO** snapshots that let you start mining BTC in under an hour instead of waiting days.
-
-### What Is It?
-
-A UTXO snapshot is a verified checkpoint of every unspent bitcoin at block height 840,000. Bitcoin Core loads it and immediately has a working view of the chain. Background validation continues automatically.
-
-### Steps
-
-1. **Install Bitcoin Core** via `INSTALL-BTC-CORE.bat`
-2. **Launch Bitcoin Core** and let it start syncing
-3. **Download** `utxo-840000.dat` (~12 GB) from [github.com/nicehash/bitcoin-utxo-snapshot](https://github.com/nicehash/bitcoin-utxo-snapshot)
-4. **Load the snapshot** while Bitcoin Core is running:
-
-```cmd
-"C:\Program Files\Bitcoin\bin\bitcoin-cli.exe" -rpcclienttimeout=0 loadtxoutset "C:\Users\YourName\Downloads\utxo-840000.dat"
-```
-
-5. **Wait for remaining sync** (minutes to hours from block 840,000 to current tip)
-6. **Start mining** BTC
-
-### Snapshot + Pruning
-
-| Setup | Disk Usage | Sync Time |
-|:------|:-----------|:----------|
-| Snapshot + Pruning | ~10 GB | ~30 minutes |
-| Snapshot + Full Chain | 600+ GB (grows over time) | ~30 min + background |
-| No Snapshot + Pruning | ~10 GB | Days |
-| No Snapshot + Full Chain | 600+ GB | Days |
-
-</details>
-
----
-
-<details>
-<summary><strong>Blockchain Pruning Guide</strong></summary>
-
-Pruning keeps only the most recent block data (~1 month) instead of the entire chain history. Mining works perfectly with pruning enabled.
-
-### Pruning Sizes by Coin
-
-| Coin | Prune Value | Pruned Size | Full Chain | Savings |
-|:-----|:-----------:|:-----------:|:----------:|:-------:|
-| BC2 | 5000 | ~5 GB | Small | Minimal |
-| DGB | 5000 | ~5 GB | ~40+ GB | ~35 GB |
-| BTC | 10000 | ~10 GB | ~600+ GB | ~590 GB |
-| BCH | 10000 | ~10 GB | ~200+ GB | ~190 GB |
-| BSV | 10000 | ~10 GB | ~400+ GB | ~390 GB |
-| XEC | 10000 | ~10 GB | ~200+ GB | ~190 GB |
-| FB | 5000 | ~5 GB | Small | Minimal |
-| PPC | 2000 | ~2 GB | Small | Minimal |
-| LCC | 2000 | ~2 GB | Small | Minimal |
-| NITO | 2000 | ~2 GB | Small | Minimal |
-| BCH2 | 2000 | ~2 GB | Small | Minimal |
-| XRO | 2000 | ~2 GB | Small | Minimal |
-
-> **Recommendation:** Enable pruning for BTC, BCH, BSV, and XEC unless you have a large drive.
-
-### Config File Locations
-
-| Coin | Config File |
-|:-----|:------------|
-| BC2 | `%APPDATA%\BitcoinII\bitcoinII.conf` |
-| DGB | `%APPDATA%\DigiByte\digibyte.conf` |
-| BTC | `%APPDATA%\Bitcoin\bitcoin.conf` |
-| BCH | `%APPDATA%\BitcoinCash\bitcoin.conf` |
-| BSV | `%APPDATA%\BitcoinSV\bitcoin.conf` |
-| XEC | `%APPDATA%\BitcoinABC\bitcoin.conf` |
-| FB | `%APPDATA%\FractalBitcoin\bitcoin.conf` |
-| PPC | `%APPDATA%\Peercoin\peercoin.conf` |
-| LCC | `%APPDATA%\LitecoinCash\litecoincash.conf` |
-| NITO | `%APPDATA%\Nito\nito.conf` |
-| BCH2 | `%APPDATA%\BitcoinCashII\bitcoincashII.conf` |
-| XRO | `%APPDATA%\Xero\xero.conf` |
-
-To change pruning after installation, close the wallet, edit the config file, set `prune=VALUE` (or `prune=0` to disable), save, and restart the wallet.
-
-</details>
-
----
-
-## UPnP Auto Port Forwarding
-
-The stratum server automatically maps ports on your router via UPnP:
-
-- No manual port forwarding needed
-- NiceHash and external miners can connect immediately
-- Mappings refresh hourly with a 2-hour TTL
-- Auto-cleaned up when the server stops
-- Server continues normally if UPnP is unavailable
-
----
-
-<details>
-<summary><strong>Stratum Protocol Details</strong></summary>
-
-### Supported Methods
-
-| Method | Support | Notes |
-|:-------|:-------:|:------|
-| `mining.subscribe` | Full | Returns extranonce1 and extranonce2 size |
-| `mining.authorize` | Full | Accepts any wallet.worker format |
-| `mining.submit` | Full | SHA-256d validation with block submission |
-| `mining.notify` | Full | Real block templates from your node |
-| `mining.set_difficulty` | Full | Vardiff with per-miner adjustment |
-| `mining.configure` | Full | Version-rolling (AsicBoost) support |
-| `mining.suggest_difficulty` | Full | Miners can request starting difficulty |
-| `mining.extranonce.subscribe` | Full | NiceHash compatibility |
-
-### Coinbase Transaction
-
-- Block height encoded in script (BIP34)
-- Coinbase tag identifying the solo miner (e.g. `/BC2Solo/`, `/DGBSolo/`)
-- Output paying the full block reward to your wallet
-- SegWit commitment (where applicable)
-
-### Share Validation
-
-1. Reconstruct coinbase: `coinb1 + extranonce1 + extranonce2 + coinb2`
-2. Build merkle root from coinbase hash + merkle branches
-3. Construct the 80-byte block header
-4. SHA-256d (double SHA-256) the header
-5. Compare against share difficulty target
-6. If it also meets the network target, submit the full block
-
-### Fallback Templates
-
-If a coin's node is unavailable, the server generates fallback templates so miners stay connected. Blocks cannot be found with fallback templates. The CMD window warns:
-
-```
-*** WARNING: BC2 node STILL not available (RPC port 8232).
-    Miners are hashing on FALLBACK templates -- blocks CANNOT be found!
-    Sync your node! ***
-```
-
-Once your node comes online, the server auto-switches to real templates.
-
-</details>
-
----
-
-<details>
-<summary><strong>Configuration Files</strong></summary>
-
-Each coin's config is stored as JSON in the HammerForge directory:
+Each coin's configuration is stored in `config-[coin].json`:
 
 ```json
 {
-  "walletAddress": "bc1qYourAddress...",
-  "stratumPort": 3333,
+  "coin": "BTC",
+  "walletAddress": "bc1q...",
   "rpcHost": "127.0.0.1",
-  "rpcPort": 8232,
-  "rpcUser": "bc2rpc",
-  "rpcPassword": "auto-generated-password",
-  "coin": "BC2",
-  "dataDir": "C:\\Users\\you\\AppData\\Roaming\\BitcoinII",
+  "rpcPort": 8332,
+  "rpcUser": "btcrpc",
+  "rpcPassword": "generated-password",
+  "stratumPort": 3335,
   "email": {
-    "enabled": true,
-    "smtpHost": "smtp.gmail.com",
+    "enabled": false,
+    "smtpHost": "",
     "smtpPort": 587,
-    "smtpUser": "you@gmail.com",
-    "smtpPass": "your-app-password",
-    "to": "you@gmail.com",
-    "useTls": true
+    "smtpUser": "",
+    "smtpPass": "",
+    "from": "",
+    "to": ""
   }
 }
 ```
 
-| Config File | Coin |
-|:------------|:-----|
-| `config-bc2.json` | BitcoinII |
-| `config-dgb.json` | DigiByte |
-| `config-btc.json` | Bitcoin |
-| `config-bch.json` | Bitcoin Cash |
-| `config-bsv.json` | Bitcoin SV |
-| `config-xec.json` | eCash |
-| `config-fb.json` | Fractal Bitcoin |
-| `config-ppc.json` | Peercoin |
-| `config-lcc.json` | Litecoin Cash |
-| `config-nito.json` | NitoCoin |
-| `config-bch2.json` | Bitcoin Cash II |
-| `config-xro.json` | XeroCoin |
+### Vardiff Settings
 
-Created automatically by `INSTALL-MINING.bat`. Edit manually if needed.
+| Parameter | Value |
+|:----------|:------|
+| Target share time | 15 seconds |
+| Retarget interval | 15 seconds |
+| Variance | 40% |
+| Min difficulty | 1 |
+| Max difficulty | 4,000,000,000,000 |
+| NiceHash minimum | 500,000 (auto) |
 
-### RPC Authentication
+### Coin-Specific Handling
 
-The stratum server supports two authentication methods for connecting to your coin node:
-
-1. **Cookie auth** (preferred) - Reads the `.cookie` file from the wallet's data directory. Most modern wallets use this automatically.
-2. **User/password auth** - Uses `rpcUser` and `rpcPassword` from the config JSON.
-
-The server tries cookie auth first, then falls back to user/password. If your wallet restarts, the cookie file is regenerated automatically and the server picks up the new credentials.
-
-### Backup Node Configs
-
-During mining setup, a backup copy of each coin's node config file (e.g. `digibyte.conf`, `bitcoin.conf`) is saved to the coin's folder inside the HammerForge directory (e.g. `HammerForge\DGB\digibyte.conf`). If the auto-write to the wallet data directory fails, you can find the correct config in the coin folder and copy it manually.
-
-</details>
+| Coins | Special Handling |
+|:------|:-----------------|
+| BCH, XEC, BCH2 | CTOR transaction ordering, no SegWit |
+| BSV | No SegWit |
+| BTC, BC2, DGB, FB, LCC, NITO, XRO | SegWit with witness commitment |
+| PPC | Block signature field, transaction timestamps |
+| DGB | SHA-256 algo version bits (0x200) |
 
 ---
 
-## Uninstall
+## Troubleshooting
 
-Right-click `UNINSTALL.bat` > **Run as administrator**. Removes:
+### "Cannot reach [COIN] node" / RPC connection failed
+- Ensure the coin node (wallet) is **running and fully synced**
+- Check that the RPC port is not blocked by a firewall
+- Verify RPC credentials in `config-[coin].json` match the coin's `.conf` file
 
-- Stratum mining server files
-- Desktop shortcuts
-- Firewall rules
+### Miner connects but shows 0 hashrate
+- Wait 30-60 seconds for hashrate calculation to stabilize
+- Check that the miner is receiving jobs (look for `mining.notify` in logs)
 
-Your blockchain data and wallets are **never** touched.
+### Block found but reward not in wallet
+- Check block status in dashboard: **ACCEPTED** vs **ORPHANED**
+- Coinbase rewards require **~100 confirmations** to mature (this is normal)
+- Look for `"Wallet address verified"` in the startup log
+- If ORPHANED, another miner's block won the race
+
+### "Could not decode wallet address"
+- The address format is not recognized by the local decoder
+- Ensure the coin node is running (RPC fallback will be attempted)
+- Look for `CRITICAL` messages in the startup log
+
+### Blocks always orphaned
+- Check **peer count**: 0 outbound peers = blocks cannot propagate
+- Ensure the node is **fully synced** (not in Initial Block Download)
+- Add more seed nodes to the coin's `.conf` file
+- Check submit latency in logs (should be **under 100ms**)
+
+### UPnP port mapping failed
+- Your router may not support UPnP or it may be disabled
+- Manually forward the stratum port in your router settings
 
 ---
 
-## File Structure
+## FAQ
+
+**How much hashrate do I need to find a block?**
+> It depends on the coin's network difficulty. For small coins (BC2, NITO, BCH2), even a single Bitaxe (~500 GH/s) can find blocks regularly. For BTC, you need significantly more hashrate or extraordinary luck.
+
+**Is there a pool fee?**
+> No. HammerForge is solo mining. You get **100% of every block reward** directly to your wallet. Zero fees.
+
+**Can I mine multiple coins at the same time?**
+> Yes. Each coin runs as a separate process on its own port. You can run all 12 simultaneously.
+
+**Does HammerForge work with NiceHash?**
+> Yes. NiceHash connections are auto-detected with appropriate settings (minimum difficulty, AsicBoost).
+
+**Do I need to keep the coin wallet open?**
+> Yes. The coin node must be running and synced. HammerForge communicates with it via JSON-RPC.
+
+**What happens if my node goes down while mining?**
+> HammerForge detects the RPC failure and displays a warning. Mining pauses until the node is back online. No blocks can be lost.
+
+**What is block pruning?**
+> Pruning reduces disk usage by only keeping recent blocks. A pruned BTC node uses ~10 GB instead of 600+ GB. Mining works perfectly with pruned nodes.
+
+**Why was my block orphaned?**
+> Another miner found a valid block at the same height, and the network chose theirs. This is normal mining competition. HammerForge's fast-path submission minimizes this risk.
+
+**What is Vardiff?**
+> Variable Difficulty automatically adjusts mining difficulty to maintain ~1 share every 15 seconds. This optimizes bandwidth and provides smoother hashrate reporting.
+
+**Can I access the dashboard remotely?**
+> Yes, via Tailscale (recommended) or by port-forwarding port 5000 through your router.
+
+---
+
+## Uninstalling
+
+Individual coin uninstallers and a master uninstaller are provided:
 
 ```
-HammerForge/
-  START-HERE.html             Interactive setup guide (open this first)
-  INSTALL-BC2-CORE.bat        BitcoinII Core installer
-  INSTALL-DGB-CORE.bat        DigiByte Core installer
-  INSTALL-BTC-CORE.bat        Bitcoin Core installer
-  INSTALL-BCH-CORE.bat        Bitcoin Cash Node installer
-  INSTALL-BSV-CORE.bat        Bitcoin SV Node installer
-  INSTALL-XEC-CORE.bat        Bitcoin ABC (eCash) installer
-  INSTALL-FB-CORE.bat         Fractal Bitcoin installer
-  INSTALL-PPC-CORE.bat        Peercoin installer
-  INSTALL-LCC-CORE.bat        Litecoin Cash installer
-  INSTALL-NITO-CORE.bat       NitoCoin installer
-  INSTALL-BCH2-CORE.bat       Bitcoin Cash II installer
-  INSTALL-XRO-CORE.bat        XeroCoin installer
-  INSTALL-MINING.bat          Mining setup (Node.js + stratum server)
-  UNINSTALL.bat               Clean uninstaller
-  OPEN-MONITOR.bat            Opens mining monitor in browser
-  README.txt                  Quick reference guide
-  server/
-    stratum.ts                Stratum protocol implementation
-    rpc.ts                    JSON-RPC client for full nodes
-    routes.ts                 Web dashboard API routes
-    storage.ts                In-memory state management
-    email.ts                  Email notifications
-    monitor.html              Mining dashboard (served on Windows)
-    index.ts                  Server entry point
-  shared/
-    schema.ts                 TypeScript type definitions
-  client/src/pages/
-    dashboard.tsx             Download page UI
-    monitor.tsx               Mining monitor (React version)
+Uninstall\UNINSTALL.bat                    -- Remove everything
+[COIN]\UNINSTALL-[COIN]-CORE.bat           -- Remove a specific coin
 ```
 
 ---
 
-## Support Development
+## Built With
 
-If you find this project useful, consider donating:
-
-| Coin | Address |
-|:-----|:--------|
-| BTC | `bc1qczmq77nrrqsxn3uk8p007r9pf07uzq2t96w3g5` |
-| BCH | `qrqtvrm6vvvzq6w8jcu9alcv599lmsgpfv7a87edaa` |
-| DGB | `DNi4NsZKH93QxBWn1RfQYizGtrKVhJcz6q` |
-| ETH | `0x996c85e9137a9020C2a3d9b4889aA6a35185d368` |
-| LTC | `Lcnv6pvW4PPBfz2LSyf9GytSDvxUWwaiSB` |
-| USDC (ERC20) | `0x996c85e9137a9020C2a3d9b4889aA6a35185d368` |
-| XEC | `ecash:qrqtvrm6vvvzq6w8jcu9alcv599lmsgpfv8sn4zh` |
-| XRP | `rJZxqccCyj93RBLBGqCqzxFgr5bURGJrrm` |
+- **Node.js** & **TypeScript** - Stratum server engine
+- **React** & **Vite** - Web dashboard frontend
+- **Tailwind CSS** & **Shadcn UI** - Dashboard styling
+- **Recharts** - Hashrate visualization
 
 ---
 
-## Legal
-
-**No Warranty.** This software is provided "as is" without warranty of any kind. The author is not liable for any damages, lost funds, lost private keys, or any other losses arising from use of this software. Solo mining involves financial risk. Block rewards are not guaranteed.
-
-**Security.** You are solely responsible for securing your wallet private keys and RPC credentials. Never share your wallet.dat or RPC passwords.
-
----
-
-## License
-
-Copyright (c) 2025 James Vernon Persons. All Rights Reserved.
-
-This software and all associated files, scripts, and documentation are the proprietary property of James Vernon Persons. No part of this software may be reproduced, distributed, transmitted, modified, reverse-engineered, or used in any form without the express written permission of the copyright holder.
-
-Unauthorized copying, distribution, or modification of this software is strictly prohibited and may result in legal action.
+<p align="center">
+  <b>Mine your own blocks. Run your own node. Keep 100% of the rewards.</b><br/>
+  <i>"Your Home Node Solution"</i>
+</p>
